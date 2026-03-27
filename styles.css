@@ -22,6 +22,11 @@ html, body {
   line-height: 1.5;
 }
 
+html {
+  overflow-y: scroll; /* Навсегда включает скроллбар, чтобы не было "прыжка" верстки */
+  overflow-x: hidden; /* Блокирует горизонтальный скролл во время анимации */
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -35,7 +40,6 @@ body::before {
   z-index: 0;
 }
 
-/* Стили для верхней шапки GitHub */
 .github-banner {
   position: relative;
   z-index: 10;
@@ -150,50 +154,55 @@ h1 {
   margin: 0 auto;
 }
 
-/* Двухколоночный макет */
+/* ОБНОВЛЕННАЯ СЕТКА И АНИМАЦИИ */
 .layout-grid {
   display: grid;
-  grid-template-columns: minmax(440px, 760px);
-  gap: 36px;
+  grid-template-columns: minmax(0, 1fr) 0fr;
+  gap: 0px;
   width: 100%;
-  max-width: 1400px;
+  max-width: 720px; /* Изначально центрируется и занимает одну колонку */
+  margin: 0 auto;
   align-items: start;
-  justify-content: center;
-  transition: grid-template-columns 0.55s ease;
+  /* Резкий старт с кинематографичным замедлением (ease-out-expo) */
+  transition: max-width 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              grid-template-columns 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              gap 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.layout-grid.has-results {
+  max-width: 1400px; /* Раздвигается на всю ширину */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 30px;
 }
 
 .layout-left {
-  justify-self: center;
-  width: 100%;
-  max-width: 760px;
-  transform: translateX(0);
-  transition: transform 0.55s ease;
+  min-width: 0;
 }
 
 .layout-right {
   position: sticky;
   top: 20px;
+  min-width: 0;
   opacity: 0;
-  transform: translateX(28px);
-  pointer-events: none;
-  transition: opacity 0.45s ease, transform 0.55s ease;
+  visibility: hidden;
+  transform: translateX(60px); /* Стартовая позиция выезда */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
 }
 
-.layout-grid.has-result .layout-left {
-  justify-self: stretch;
-  max-width: 100%;
-  transform: translateX(-28px);
-}
-
-.layout-grid.has-result {
-  grid-template-columns: minmax(440px, 760px) minmax(0, 1fr);
-  justify-content: stretch;
-}
-
-.layout-grid.has-result .layout-right {
+.layout-grid.has-results .layout-right {
   opacity: 1;
+  visibility: visible;
   transform: translateX(0);
-  pointer-events: auto;
+  /* Задержка, чтобы правая панель начала проявляться уже в движении */
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+/* Фикс чтобы контент не сплющивало в узкую полоску во время анимации */
+@media (min-width: 993px) {
+  .layout-right > div {
+    min-width: 480px;
+  }
 }
 
 .card {
@@ -298,39 +307,10 @@ input[type="color"] {
 }
 
 .options-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.option-group {
-  background: var(--surface);
-  border: 2px solid var(--border);
-  padding: 16px;
-}
-
-.option-group h3 {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--border-strong);
-  margin-bottom: 14px;
-}
-
-.group-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px 16px;
-}
-
-.group-grid .input-group {
-  margin-bottom: 0;
-}
-
-.group-span-full {
-  grid-column: 1 / -1;
+  gap: 20px;
+  margin-bottom: 24px;
 }
 
 .color-row {
@@ -543,21 +523,23 @@ button.generate:disabled {
 @media (max-width: 992px) {
   .layout-grid {
     grid-template-columns: 1fr;
+    max-width: 720px !important;
   }
-  .layout-left {
-    max-width: 100%;
+  .layout-grid.has-results {
+    grid-template-columns: 1fr;
   }
   .layout-right {
     position: relative;
     top: 0;
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
+    transform: translateY(40px);
+  }
+  .layout-grid.has-results .layout-right {
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 600px) {
-  .group-grid { grid-template-columns: 1fr; }
+  .options-grid { grid-template-columns: 1fr; gap: 10px; }
   .banner-left { flex-direction: column; align-items: flex-start; gap: 4px; }
   .banner-left .separator { display: none; }
   .banner-left .built-by { margin-left: 0; }
