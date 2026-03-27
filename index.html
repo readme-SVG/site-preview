@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Badge Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="page">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 5.5L13 9L7 12.5V5.5Z" fill="white"/>
+        </svg>
+      </div>
+      <span class="logo-text">WEB·BADGE</span>
+    </div>
+    <h1>Website Badge<br/>Generator</h1>
+    <p class="subtitle">Paste any website URL — get a clickable SVG card for your README or site.</p>
+  </header>
+
+  <div class="card">
+    <div class="input-group">
+      <label>Website URL</label>
+      <input type="text" id="url-input" placeholder="https://example.com" />
+    </div>
+
+    <div class="options-grid">
+      <div class="input-group" style="margin-bottom:0">
+        <label>Width (px)</label>
+        <input type="number" id="width-input" value="320" min="200" max="600" />
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Border Radius</label>
+        <input type="number" id="radius-input" value="8" min="0" max="30" />
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Background Color</label>
+        <div class="color-row">
+          <input type="color" id="bg-color-picker" value="#0d1117" />
+          <input type="text" id="bg-color-text" value="#0d1117" />
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Title Color</label>
+        <div class="color-row">
+          <input type="color" id="title-color-picker" value="#ffffff" />
+          <input type="text" id="title-color-text" value="#ffffff" />
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Title Plate Color</label>
+        <div class="color-row">
+          <input type="color" id="plate-color-picker" value="#0f1117" />
+          <input type="text" id="plate-color-text" value="#0f1117" />
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Text Opacity (0-1)</label>
+        <input type="number" id="title-opacity-input" value="1" min="0" max="1" step="0.05" />
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Text Plate Opacity (0-1)</label>
+        <input type="number" id="plate-opacity-input" value="0.78" min="0" max="1" step="0.05" />
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Title Position</label>
+        <select id="title-position-input">
+          <option value="outside_top">Very Top (above preview)</option>
+          <option value="overlay_top">Top (overlay)</option>
+          <option value="overlay_bottom" selected>Bottom (overlay)</option>
+          <option value="outside_bottom">Very Bottom (below preview)</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Border Width (px)</label>
+        <input type="number" id="border-width-input" value="1" min="0" max="10" />
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>Border Color</label>
+        <div class="color-row">
+          <input type="color" id="border-color-picker" value="#ffffff" />
+          <input type="text" id="border-color-text" value="#ffffff" />
+        </div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+
+    <button class="generate" id="gen-btn" onclick="generate()">
+      Generate Badge
+    </button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div>Fetching website info...</div>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="result-section">
+      <h3>Preview</h3>
+      <div class="preview-wrap">
+        <a id="preview-link" href="#" target="_blank" rel="noopener">
+          <img id="preview-img" src="" alt="Website card preview" style="max-width:100%" />
+        </a>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <h3>Embed Code</h3>
+      <div class="tabs">
+        <button class="tab active" onclick="setTab('markdown', this)">Markdown</button>
+        <button class="tab" onclick="setTab('html', this)">HTML</button>
+        <button class="tab" onclick="setTab('url', this)">Direct URL</button>
+      </div>
+      <div class="code-block">
+        <pre id="code-output"></pre>
+        <button class="copy-btn" id="copy-btn" onclick="copyCode()">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
