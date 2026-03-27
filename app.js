@@ -27,7 +27,6 @@ function changeLanguage(lang) {
   }
 }
 
-// Глобальные переменные генератора
 let currentUrl = null;
 let currentTab = 'markdown';
 let badgeUrl = '';
@@ -91,10 +90,13 @@ async function generate() {
   }
 
   hideError();
-  const layoutGrid = document.querySelector('.layout-grid');
-  layoutGrid?.classList.add('has-result');
   document.getElementById('result-card').classList.remove('visible');
   document.getElementById('loading').classList.add('visible');
+  
+  // Добавляем класс-триггер для запуска плавной CSS-анимации макета
+  const grid = document.querySelector('.layout-grid');
+  if (grid) grid.classList.add('has-results');
+
   document.getElementById('gen-btn').disabled = true;
 
   try {
@@ -189,7 +191,6 @@ function copyCode() {
   });
 }
 
-
 const langSelect = document.getElementById('lang-select');
 if (langSelect) {
   const initialLang = translations[langSelect.value] ? langSelect.value : 'en';
@@ -197,7 +198,6 @@ if (langSelect) {
   changeLanguage(initialLang);
 }
 
-// Экспорт функций
 window.changeLanguage = changeLanguage;
 window.generate = generate;
 window.setTab = setTab;
