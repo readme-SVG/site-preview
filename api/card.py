@@ -36,6 +36,7 @@ def generate_svg(
     title: str,
     image_url: str,
     width: int = 320,
+    card_height: int = 0,
     background_color: str = "#0f1117",
     title_color: str = "#ffffff",
     title_opacity: float = 1.0,
@@ -46,8 +47,9 @@ def generate_svg(
     border_width: int = 1,
     border_color: str = "rgba(255,255,255,0.07)",
     embed_thumbnail: bool = True,
+    image_scale: float = 1.0,
+    image_offset_x: int = 0,
 ) -> str:
-    thumb_height = int(width * 9 / 16)
     thumb_src = image_url
 
     if embed_thumbnail and image_url:
@@ -73,7 +75,17 @@ def generate_svg(
     position = position_map.get(title_position, "overlay_bottom")
     is_outside = position in {"outside_top", "outside_bottom"}
 
-    card_h = thumb_height + (text_h if is_outside else 0)
+    if card_height > 0:
+        card_h = card_height
+        if is_outside:
+            thumb_height = card_h - text_h
+        else:
+            thumb_height = card_h
+        thumb_height = max(0, thumb_height)
+    else:
+        thumb_height = int(width * 9 / 16)
+        card_h = thumb_height + (text_h if is_outside else 0)
+
     thumb_y = text_h if position == "outside_top" else 0
 
     if position == "overlay_top":
@@ -103,9 +115,14 @@ def generate_svg(
             f'letter-spacing="-0.01em">{_esc(line)}</text>\n  '
         )
 
+    img_w = width * image_scale
+    img_h = thumb_height * image_scale
+    img_x = (width - img_w) / 2 + image_offset_x
+    img_y = thumb_y + (thumb_height - img_h) / 2
+
     image_svg = ""
     if thumb_src:
-        image_svg = f'<image href="{thumb_src}" x="0" y="{thumb_y}" width="{width}" height="{thumb_height}" preserveAspectRatio="xMidYMid slice" clip-path="url(#tc)"/>'
+        image_svg = f'<image href="{thumb_src}" x="{img_x}" y="{img_y}" width="{img_w}" height="{img_h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#tc)"/>'
     else:
         image_svg = f'<rect x="0" y="{thumb_y}" width="{width}" height="{thumb_height}" fill="#2a2a2a" clip-path="url(#tc)"/><text x="{width//2}" y="{thumb_y + thumb_height//2}" fill="#666" font-size="14" text-anchor="middle" font-family="sans-serif">No Image</text>'
 
