@@ -84,7 +84,7 @@ def badge():
     height = max(safe_int(request.args.get("height"), 0), 0)
     radius = min(max(safe_int(request.args.get("radius"), 10), 0), 30)
     
-    bg = "#" + request.args.get("bg", "0f1117").lstrip("#")
+    bg = "#000000"
     title_color = "#" + request.args.get("title_color", "ffffff").lstrip("#")
     title_opacity = min(max(safe_float(request.args.get("title_opacity"), 1.0), 0.0), 1.0)
     plate_color = "#" + request.args.get("plate_color", "0f1117").lstrip("#")

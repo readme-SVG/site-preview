@@ -53,7 +53,6 @@ function syncSlider(sliderId, displayId, isFloat = true) {
   }
 }
 
-syncColor('bg-color-picker', 'bg-color-text');
 syncColor('title-color-picker', 'title-color-text');
 syncColor('plate-color-picker', 'plate-color-text');
 syncColor('border-color-picker', 'border-color-text');
@@ -108,7 +107,6 @@ async function generate() {
     const width = document.getElementById('width-input').value || 320;
     const height = document.getElementById('height-input').value || 0;
     const radius = document.getElementById('radius-input').value || 0;
-    const bg = document.getElementById('bg-color-text').value.replace('#', '');
     const titleColor = document.getElementById('title-color-text').value.replace('#', '');
     const plateColor = document.getElementById('plate-color-text').value.replace('#', '');
     const titleOpacity = document.getElementById('title-opacity-input').value || 1;
@@ -124,7 +122,7 @@ async function generate() {
     const customTitleEl = document.getElementById('custom-title-input');
     const customTitle = customTitleEl ? customTitleEl.value.trim() : '';
 
-    badgeUrl = `/badge?url=${encodeURIComponent(currentUrl)}&width=${width}&height=${height}&radius=${radius}&bg=${bg}&title_color=${titleColor}&title_opacity=${titleOpacity}&plate_color=${plateColor}&plate_opacity=${plateOpacity}&title_position=${titlePosition}&border_width=${borderWidth}&border_color=${borderColor}&image_scale=${scale}&image_offset_x=${offsetX}&image_offset_y=${offsetY}`;
+    badgeUrl = `/badge?url=${encodeURIComponent(currentUrl)}&width=${width}&height=${height}&radius=${radius}&title_color=${titleColor}&title_opacity=${titleOpacity}&plate_color=${plateColor}&plate_opacity=${plateOpacity}&title_position=${titlePosition}&border_width=${borderWidth}&border_color=${borderColor}&image_scale=${scale}&image_offset_x=${offsetX}&image_offset_y=${offsetY}`;
     
     if (customTitle) {
         badgeUrl += `&custom_title=${encodeURIComponent(customTitle)}`;

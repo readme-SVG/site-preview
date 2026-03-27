@@ -37,7 +37,7 @@ def generate_svg(
     image_url: str,
     width: int = 320,
     card_height: int = 0,
-    background_color: str = "#0f1117",
+    background_color: str = "#000000",
     title_color: str = "#ffffff",
     title_opacity: float = 1.0,
     title_plate_opacity: float = 0.78,
