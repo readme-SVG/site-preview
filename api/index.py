@@ -3,7 +3,7 @@ import os
 import urllib.parse
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, Response, request, send_file
+from flask import Flask, Response, request, send_file, send_from_directory
 from .card import generate_svg
 
 app = Flask(__name__)
@@ -68,13 +68,18 @@ def script():
     js_path = os.path.join(os.path.dirname(__file__), "..", "app.js")
     return send_file(os.path.abspath(js_path), mimetype="application/javascript")
 
+# Этот роут разрешает серверу отдавать JS файлы из папки i18n
+@app.route("/i18n/<path:path>")
+def i18n_files(path):
+    i18n_dir = os.path.join(os.path.dirname(__file__), "..", "i18n")
+    return send_from_directory(os.path.abspath(i18n_dir), path, mimetype="application/javascript")
+
 @app.route("/badge")
 def badge():
     url_param = request.args.get("url")
     if not url_param:
         return Response("Missing 'url' parameter", status=400)
 
-    # Исправлен синтаксис (убраны лишние скобки)
     width = min(max(safe_int(request.args.get("width"), 320), 200), 1000)
     height = max(safe_int(request.args.get("height"), 0), 0)
     radius = min(max(safe_int(request.args.get("radius"), 10), 0), 30)
