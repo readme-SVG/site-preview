@@ -8,9 +8,9 @@ def fetch_image_as_base64(url: str) -> Optional[str]:
     try:
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "Mozilla/5.0 (compatible; sitebadge/1.0)"},
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"},
         )
-        with urllib.request.urlopen(req, timeout=8) as resp:
+        with urllib.request.urlopen(req, timeout=10) as resp:
             data = resp.read()
             ct = resp.headers.get("Content-Type", "image/jpeg").split(";")[0]
             encoded = base64.b64encode(data).decode("utf-8")
