@@ -51,27 +51,62 @@ body::before {
   font-weight: 700;
 }
 
-.banner-left span {
-  color: var(--accent);
-}
-
-.github-link {
+.banner-left {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+.banner-left a {
   color: var(--text);
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.github-link:hover {
+.banner-left a:hover {
   color: var(--accent);
 }
 
-.github-link svg {
-  width: 20px;
-  height: 20px;
+.banner-left .gh-logo {
+  width: 18px;
+  height: 18px;
   fill: currentColor;
+}
+
+.banner-left .separator {
+  color: var(--muted);
+}
+
+.banner-left .gh-repo {
+  color: var(--border-strong);
+}
+
+.banner-left .built-by {
+  color: var(--muted);
+  margin-left: 10px;
+}
+
+.banner-left .gh-author {
+  color: var(--accent);
+}
+
+.banner-right select {
+  background: var(--bg);
+  color: var(--border-strong);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s;
+}
+
+.banner-right select:focus {
+  border-color: var(--accent);
 }
 
 .page {
@@ -165,7 +200,6 @@ select:focus {
   border-color: var(--accent);
 }
 
-/* Стилизация ползунков */
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
@@ -433,4 +467,7 @@ button.generate:disabled {
 
 @media (max-width: 600px) {
   .options-grid { grid-template-columns: 1fr; gap: 10px; }
+  .banner-left { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .banner-left .separator { display: none; }
+  .banner-left .built-by { margin-left: 0; }
 }
