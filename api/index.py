@@ -26,8 +26,8 @@ def fetch_website_info(url: str) -> dict:
         except Exception:
             pass
 
-        encoded_url = urllib.parse.quote(url, safe='')
-        screenshot_url = f"https://s0.wordpress.com/mshots/v1/{encoded_url}?w=800&h=450"
+        # Используем thum.io вместо mshots, так как он отдает чистую картинку без теней и рамок
+        screenshot_url = f"https://image.thum.io/get/width/1024/crop/768/noanimate/{url}"
 
         return {
             "title": title,
@@ -74,6 +74,7 @@ def badge():
     
     image_scale = max(float(request.args.get("image_scale", 1.0)), 0.1)
     image_offset_x = int(request.args.get("image_offset_x", 0))
+    image_offset_y = int(request.args.get("image_offset_y", 0))
 
     title_position_aliases = {
         "top": "overlay_top", "bottom": "overlay_bottom",
@@ -106,7 +107,8 @@ def badge():
         border_color=border_color,
         embed_thumbnail=embed,
         image_scale=image_scale,
-        image_offset_x=image_offset_x
+        image_offset_x=image_offset_x,
+        image_offset_y=image_offset_y
     )
 
     return Response(
